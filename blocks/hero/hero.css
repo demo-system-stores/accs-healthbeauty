@@ -1,37 +1,151 @@
-.hero-container .hero-wrapper {
-  max-width: unset;
-  padding: 0;
+main > .section > div:has(> .hero) {
+  max-width: 1200px;
+  padding: 20px 24px 0;
 }
 
 .hero {
   position: relative;
-  padding: 40px 24px;
-  min-height: 300px;
-}
-
-.hero h1 {
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-  color: var(--background-color);
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-sizing: border-box;
+  min-height: 360px;
+  padding: 32px 24px;
+  overflow: hidden;
+  border-radius: 24px;
+  background: #f8f7f2;
+  color: #293f36;
+  box-shadow: 0 12px 36px rgb(41 63 54 / 8%);
+  font-family: roboto, system-ui, sans-serif;
+  font-size: 1.6rem;
+  line-height: 1.75;
+  letter-spacing: 0;
+  overflow-wrap: anywhere;
 }
 
 .hero picture {
   position: absolute;
-  z-index: -1;
+  z-index: -2;
   inset: 0;
-  object-fit: cover;
-  box-sizing: border-box;
+  display: block;
 }
 
 .hero img {
-  object-fit: cover;
+  display: block;
   width: 100%;
   height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Preserve the photograph's colors when the hero has no authored text. */
+.hero:has(picture):has(:is(h1, h2, h3, p:not(:has(picture))))::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: linear-gradient(90deg, rgb(20 38 29 / 88%), rgb(20 38 29 / 62%));
+  content: '';
+}
+
+.hero :is(h1, h2, h3) {
+  max-width: 14ch;
+  margin: 0 0 24px;
+  color: inherit;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(3.6rem, 5vw, 6.4rem);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.hero p {
+  max-width: 48ch;
+  margin: 0 0 20px;
+}
+
+.hero p:has(> picture:only-child) {
+  margin: 0;
+}
+
+.hero:has(picture) :is(h1, h2, h3, p) {
+  color: #fff;
+}
+
+.hero > div > div > :last-child {
+  margin-bottom: 0;
+}
+
+.hero a:not(.button) {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+
+.hero a.button {
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 14px 28px;
+  border: 1px solid #446951;
+  border-radius: 999px;
+  background: #446951;
+  color: #fff;
+  font-family: inherit;
+  font-size: 1.4rem;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  white-space: normal;
+  transition: background-color 200ms, box-shadow 200ms;
+}
+
+.hero:has(picture) a.button,
+.hero a.button.secondary {
+  border-color: #f8f7f2;
+  background: #f8f7f2;
+  color: #293f36;
+}
+
+.hero a:focus-visible {
+  outline: 3px solid currentcolor;
+  outline-offset: 5px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .hero a.button:hover {
+    border-color: #293f36;
+    background: #293f36;
+    color: #fff;
+    box-shadow: 0 6px 16px rgb(20 38 29 / 20%);
+  }
+}
+
+@media (min-width: 600px) {
+  .hero {
+    min-height: 420px;
+    padding: 48px 40px;
+  }
 }
 
 @media (min-width: 900px) {
+  main > .section > div:has(> .hero) {
+    padding: 24px 32px 0;
+  }
+
   .hero {
-    padding: 40px 32px;
+    min-height: 480px;
+    padding: 64px;
+    border-radius: 32px;
+  }
+
+  .hero:has(picture):has(:is(h1, h2, h3, p:not(:has(picture))))::before {
+    background: linear-gradient(90deg, rgb(20 38 29 / 88%), rgb(20 38 29 / 62%) 55%, rgb(20 38 29 / 12%));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero a.button {
+    transition: none;
   }
 }
